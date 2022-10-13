@@ -14,8 +14,6 @@ public class DriveThanks : MonoBehaviour
     public GameObject enemy;
 
     private float speed = 15.0f;
-    private float rotSpeed = 5.0f;
-    private float moveSpeed = 1.0f;
 
     static float delayReset = 0.2f;
     float delay = delayReset;
