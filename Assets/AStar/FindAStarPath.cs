@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using UnityEngine.Timeline;
-using Unity.VisualScripting;
+using UnityEngine;
 
+[System.Serializable]
 public class PathMarker
 {
     public MapLocation location;
@@ -13,27 +11,33 @@ public class PathMarker
     public float F;
 
     public GameObject marker;
-    public PathMarker parent; 
+    public PathMarker parent;
 
-    public PathMarker (MapLocation l, float g, float h, float f,GameObject marker, PathMarker p)
+    public PathMarker(MapLocation l, float g, float h, float f, GameObject m, PathMarker p)
     {
         location = l;
         G = g;
         H = h;
         F = f;
-        this.marker = marker;
+        marker = m;
         parent = p;
     }
 
     public override bool Equals(object obj)
     {
-        if(obj == null || !this.GetType().Equals(obj.GetType()))
+        if (obj == null || !this.GetType().Equals(obj.GetType()))
         {
             return false;
+            
         }
         else
         {
-            return location.Equals(((PathMarker) obj).location);
+            int xTest = ((PathMarker)obj).location.x;
+            int yTest = ((PathMarker)obj).location.z;
+            if ( xTest == location.x && yTest == location.z){
+                return true;
+            }
+            return false;   
         }
     }
 
@@ -50,24 +54,25 @@ public class FindAStarPath : MonoBehaviour
     public Material closedMaterial;
     public Material openMaterial;
 
-    List<PathMarker> open;
-    List<PathMarker> closed;
+    List<PathMarker> open = new List<PathMarker>();
+    List<PathMarker> closed = new List<PathMarker>();
 
     public GameObject start;
     public GameObject end;
-    public GameObject pathp;
+    public GameObject pathP;
 
     PathMarker goalNode;
     PathMarker startNode;
 
     PathMarker lastPos;
 
-    bool done = false;
+    public bool done = false;
+    public bool go = false;
 
     void RemoveAllMarkers()
     {
         GameObject[] markers = GameObject.FindGameObjectsWithTag("marker");
-        foreach(GameObject marker in markers)
+        foreach (GameObject marker in markers)
         {
             Destroy(marker);
         }
@@ -79,10 +84,11 @@ public class FindAStarPath : MonoBehaviour
         RemoveAllMarkers();
 
         List<MapLocation> locations = new List<MapLocation>();
-        for(int z = 1; z < maze.depth - 1; z++){
-            for (int x = 1; x < maze.width - 1; x++)
+        for (int z = 1; z < maze.depth - 1; ++z)
+        {
+            for (int x = 1; x < maze.width - 1; ++x)
             {
-                if(maze.map[x,z] != 1)
+                if (maze.map[x, z] != 1)
                 {
                     locations.Add(new MapLocation(x, z));
                 }
@@ -92,11 +98,11 @@ public class FindAStarPath : MonoBehaviour
 
         locations.Shuffle();
 
-        Vector3 startLocation = new Vector3(locations[0].x * maze.scale, 0, locations[0].z * maze.scale);
-        startNode = new PathMarker(new MapLocation(locations[0].x, locations[0].z), 0, 0, 0, Instantiate(start, startLocation, Quaternion.identity), null);
+        Vector3 startLocation = new Vector3(locations[0].x * maze.scale, 0f, locations[0].z * maze.scale);
+        startNode = new PathMarker(new MapLocation(locations[0].x, locations[0].z), 0f, 0f, 0f, Instantiate(start, startLocation, Quaternion.identity), null);
 
-        Vector3 goalLocation = new Vector3(locations[1].x * maze.scale , 0, locations[1].z * maze.scale);
-        goalNode = new PathMarker(new MapLocation(locations[1].x, locations[1].z), 0, 0, 0, Instantiate(end, goalLocation, Quaternion.identity), null);
+        Vector3 goalLocation = new Vector3(locations[1].x * maze.scale, 0f, locations[1].z * maze.scale);
+        goalNode = new PathMarker(new MapLocation(locations[1].x, locations[1].z), 0f, 0f, 0f, Instantiate(end, goalLocation, Quaternion.identity), null);
 
         open.Clear();
         closed.Clear();
@@ -107,13 +113,19 @@ public class FindAStarPath : MonoBehaviour
 
     public void Search(PathMarker thisNode)
     {
+        if (thisNode == null)
+        {
+            return;
+        }
+
         if (thisNode.Equals(goalNode))//Goal was found
         {
             done = true;
             return;
         }
 
-        foreach(MapLocation dir in maze.directions){
+        foreach (MapLocation dir in maze.directions)
+        {
             MapLocation neighbour = dir + thisNode.location;
 
             if (maze.map[neighbour.x, neighbour.z] == 1)
@@ -121,7 +133,7 @@ public class FindAStarPath : MonoBehaviour
                 continue;
             }
 
-            if(neighbour.x < 1 || neighbour.x >= maze.width || neighbour.z < 1 ||  neighbour.z >= maze.depth)
+            if (neighbour.x < 1 || neighbour.x >= maze.width || neighbour.z < 1 || neighbour.z >= maze.depth)
             {
                 continue;
             }
@@ -135,15 +147,69 @@ public class FindAStarPath : MonoBehaviour
             float H = Vector2.Distance(neighbour.ToVector(), goalNode.location.ToVector());
             float F = G + H;
 
-            GameObject pathBlock = Instantiate(pathp, new Vector3(neighbour.x * maze.scale, 0, neighbour.z * maze.scale), Quaternion.identity);
+            GameObject pathBlock = Instantiate(pathP, new Vector3(neighbour.x * maze.scale, 0f, neighbour.z * maze.scale), Quaternion.identity);
+
+            TextMesh[] values = pathBlock.GetComponentsInChildren<TextMesh>();
+            values[0].text = "G: " + G.ToString("0.00");
+            values[1].text = "H: " + H.ToString("0.00");
+            values[2].text = "F: " + F.ToString("0.00");
+
+            if (!UpdateMarker(neighbour, G, H, F, thisNode))
+            {
+                open.Add(new PathMarker(neighbour, G, H, F, pathBlock, thisNode));
+            }
+
         }
+
+        open = open.OrderBy(p => p.F).ThenBy(n => n.H).ToList<PathMarker>();
+        PathMarker pm = (PathMarker)open.ElementAt(0);
+
+        closed.Add(pm);
+
+        open.RemoveAt(0);
+        pm.marker.GetComponent<Renderer>().material = closedMaterial;
+        lastPos = pm;
+    }
+
+    bool UpdateMarker(MapLocation pos, float g, float h, float f, PathMarker parent)
+    {
+        foreach (PathMarker p in open)
+        {
+            if (p.location.Equals(pos))
+            {
+                p.G = g;
+                p.H = h;
+                p.F = f;
+                p.parent = parent;
+                return true;
+            }
+
+        }
+        return false;
+
+    }
+
+    void GetPath()
+    {
+
+        RemoveAllMarkers();
+        PathMarker begin = lastPos;
+
+        while (!startNode.Equals(begin) && begin != null)
+        {
+
+            Instantiate(pathP, new Vector3(begin.location.x * maze.scale, 0.0f, begin.location.z * maze.scale), Quaternion.identity);
+            begin = begin.parent;
+        }
+
+        Instantiate(pathP, new Vector3(startNode.location.x * maze.scale, 0.0f, startNode.location.z * maze.scale), Quaternion.identity);
     }
 
     bool IsClosed(MapLocation marker)
     {
-        foreach(PathMarker p in closed)
+        foreach (PathMarker p in closed)
         {
-            if (p.location.Equals(marker))
+            if (p.location.x == marker.x && p.location.z == marker.z)
             {
                 return true;
             }
@@ -154,7 +220,7 @@ public class FindAStarPath : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -163,6 +229,30 @@ public class FindAStarPath : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             BeginSearch();
+            go = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.V) && !done)
+        {
+            Search(lastPos);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GetPath();
+        }
+
+        if (!done && go)
+        {
+            Search(lastPos);
+        }
+        else
+        {
+            if (go)
+            {
+                GetPath();
+            }
+            
         }
     }
 }

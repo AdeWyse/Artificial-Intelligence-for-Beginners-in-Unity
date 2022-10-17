@@ -444,8 +444,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bbdb95ccc4b4577a62495732a02d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  depth: 10
+  directions:
+  - x: 1
+    z: 0
+  - x: 0
+    z: 1
+  - x: -1
+    z: 0
+  - x: 0
+    z: -1
+  width: 20
+  depth: 20
   scale: 6
 --- !u!114 &1005088015
 MonoBehaviour:
@@ -464,7 +473,9 @@ MonoBehaviour:
   openMaterial: {fileID: 2100000, guid: 8ab3124b7e8a34ca6bb2e831a9726475, type: 2}
   start: {fileID: 302218380737281610, guid: ef44b7d2e6e35443aab13daf5583bd3e, type: 3}
   end: {fileID: 6856673923357348324, guid: a05f88bb7457d4e59bd0ee0e79575ce1, type: 3}
-  pathp: {fileID: 4872082831671335508, guid: fbc327f82b9b646dca7e0960e120ec66, type: 3}
+  pathP: {fileID: 4872082831671335508, guid: fbc327f82b9b646dca7e0960e120ec66, type: 3}
+  done: 0
+  go: 0
 --- !u!850595691 &1160735724
 LightingSettings:
   m_ObjectHideFlags: 0
