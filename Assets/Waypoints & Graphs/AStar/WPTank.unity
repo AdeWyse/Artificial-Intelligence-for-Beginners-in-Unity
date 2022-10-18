@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 500e18cf99fc1f24a82aa2ba554bbcb6, type: 2}
 --- !u!1 &48216055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,8 +1149,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1761980786}
-        m_TargetAssemblyTypeName: WpFollow, Assembly-CSharp
+      - m_Target: {fileID: 1761980788}
+        m_TargetAssemblyTypeName: FollowNavMesh, Assembly-CSharp
         m_MethodName: GoToCity
         m_Mode: 1
         m_Arguments:
@@ -1283,8 +1283,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1761980786}
-        m_TargetAssemblyTypeName: WpFollow, Assembly-CSharp
+      - m_Target: {fileID: 1761980788}
+        m_TargetAssemblyTypeName: FollowNavMesh, Assembly-CSharp
         m_MethodName: GoToRuin
         m_Mode: 1
         m_Arguments:
@@ -1500,8 +1500,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1761980786}
-        m_TargetAssemblyTypeName: WpFollow, Assembly-CSharp
+      - m_Target: {fileID: 1761980788}
+        m_TargetAssemblyTypeName: FollowNavMesh, Assembly-CSharp
         m_MethodName: GoToBuilding
         m_Mode: 1
         m_Arguments:
@@ -2466,16 +2466,24 @@ PrefabInstance:
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.24
+      value: -25.240002
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: 0.02999878
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.55
+      value: 1.5499997
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2483,15 +2491,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0.000000029802322
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.000000014901161
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c58838a1d6c17484393fa08cdb7f059d, type: 3}
@@ -2520,12 +2528,47 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761980784}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9eec09cca3501cc4ea367cb7d407f85e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wpManager: {fileID: 777433854}
+--- !u!114 &1761980788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761980784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669e7cdbc71951f499b2647beda38d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wpManager: {fileID: 777433854}
+--- !u!195 &1761980789
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761980784}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1965236738
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,8 +2787,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1761980786}
-        m_TargetAssemblyTypeName: WpFollow, Assembly-CSharp
+      - m_Target: {fileID: 1761980788}
+        m_TargetAssemblyTypeName: FollowNavMesh, Assembly-CSharp
         m_MethodName: GoToHeli
         m_Mode: 1
         m_Arguments:
