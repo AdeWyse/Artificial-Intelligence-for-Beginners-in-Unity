@@ -7,7 +7,7 @@ public class State
 {
     public enum STATE
     {
-        IDLE, PATROL, PURSUE, ATTACK, SLEEP
+        IDLE, PATROL, PURSUE, ATTACK, SLEEP, RUNAWAY
     };
 
     public enum EVENT
@@ -25,7 +25,9 @@ public class State
 
     float visDistance = 10f;
     float visAngle = 30f;
-    float shootDistance = 3f;
+    float shootDistance = 5f;
+    float scaredAngle = -30f;
+    float scaredDistance = 2;
 
     public State(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
     {
@@ -87,13 +89,20 @@ public class State
     public bool CanAttackPlayer()
     {
         Vector3 direction = player.position - npc.transform.position;
-        Debug.Log(player.position + " BBBBBBBBBBBBBBB");
-        
-        Debug.Log(npc.transform.position + " AAAAAAAAAAAAAAA");
-        Debug.Log(direction);
-
 
         if (direction.magnitude < shootDistance)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsScared()
+    {
+        Vector3 direction = player.position - npc.transform.position;
+        float angle = Vector3.Angle(direction, npc.transform.position);
+
+        if (direction.magnitude < scaredDistance && angle > scaredAngle)
         {
             return true;
         }

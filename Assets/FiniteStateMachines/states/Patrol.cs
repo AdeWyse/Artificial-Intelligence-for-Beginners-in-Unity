@@ -15,7 +15,17 @@ public class Patrol : State
 
     public override void Enter()
     {
-        currentIndex = 0;
+        float lastDistance = Mathf.Infinity;
+        for(int i = 0; i < GameEnvironment.Singleton.Checkpoints.Count; i++)
+        {
+            GameObject thisWaypoint =  GameEnvironment.Singleton.Checkpoints[i];
+            float distance = Vector3.Distance(npc.transform.position, thisWaypoint.transform.position);
+            if(distance < lastDistance)
+            {
+                currentIndex = i - 1;
+                lastDistance = distance;
+            }
+        }
         anim.SetTrigger("isWalking");
         base.Enter();
     }
@@ -25,6 +35,10 @@ public class Patrol : State
         if (CanSeePlayer())
         {
             nextstate = new Pursue(npc, agent, anim, player);
+            stage = EVENT.EXIT;
+        }else if (IsScared())
+        {
+            nextstate = new RunAway(npc, agent, anim, player);
             stage = EVENT.EXIT;
         }
         if (agent.remainingDistance < 1)

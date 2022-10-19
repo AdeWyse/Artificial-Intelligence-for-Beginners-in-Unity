@@ -8,6 +8,10 @@ TagManager:
   - ground
   - marker
   - AI
+  - Checkpoint
+  - Fire
+  - CinemachineTarget
+  - Safe
   layers:
   - Default
   - TransparentFX
