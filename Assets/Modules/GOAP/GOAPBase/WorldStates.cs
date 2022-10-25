@@ -37,10 +37,10 @@ public class WorldStates
             {
                 RemoveState(key);
             }
-            else
-            {
-                states.Add(key, value);
-            }
+        }
+        else
+        {
+            states.Add(key, value);
         }
     }
 

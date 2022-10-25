@@ -1,15 +1,13 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityStandardAssets.Effects;
 
 public abstract class GAction : MonoBehaviour
 {
     public string actionName = "Action";
     public float cost = 1f;
     public GameObject target;
-    public GameObject targetTag;
+    public string targetTag;
     public float duration = 0f;
     public WorldState[] preConditions;
     public WorldState[] afterEffects;
@@ -18,7 +16,11 @@ public abstract class GAction : MonoBehaviour
     public Dictionary<string, int> effects;
 
     public WorldStates agentBeliefs;
+
+    public GInventory inventory;
     public bool running = false;
+
+    public WorldStates beliefs;
 
     public GAction()
     {
@@ -45,6 +47,9 @@ public abstract class GAction : MonoBehaviour
                 effects.Add(effect.key, effect.value);
             }
         }
+
+        inventory = this.GetComponent<GAgent>().inventory;
+        beliefs = this.GetComponent<GAgent>().beliefs;
     }
 
     public bool IsAchievable()

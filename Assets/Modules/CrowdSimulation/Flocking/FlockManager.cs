@@ -24,7 +24,7 @@ public class FlockManager : MonoBehaviour
         allFish = new GameObject[numFish];
         for(int i = 0; i < numFish; i++)
         {
-            Vector3 position = this.transform.position + new Vector3(Random.RandomRange(-swimLimits.x, swimLimits.x), Random.RandomRange(-swimLimits.y, swimLimits.y), Random.RandomRange(-swimLimits.z, swimLimits.z));
+            Vector3 position = this.transform.position + new Vector3(Random.Range(-swimLimits.x, swimLimits.x), Random.Range(-swimLimits.y, swimLimits.y), Random.Range(-swimLimits.z, swimLimits.z));
             allFish[i] = Instantiate(fishPrefab, position, Quaternion.identity);
         }
 
@@ -37,8 +37,8 @@ public class FlockManager : MonoBehaviour
     {
         if(Random.RandomRange(0f, 100f) < 10)
         {
-            goalPosition = this.transform.position + new Vector3(Random.RandomRange(-swimLimits.x, swimLimits.x), Random.RandomRange(-swimLimits.y, swimLimits.y), Random.RandomRange(-swimLimits.z, swimLimits.z));
-            goalPosition = this.transform.position + new Vector3(Random.RandomRange(-swimLimits.x, swimLimits.x), Random.RandomRange(-swimLimits.y, swimLimits.y), Random.RandomRange(-swimLimits.z, swimLimits.z));
+            goalPosition = this.transform.position + new Vector3(Random.Range(-swimLimits.x, swimLimits.x), Random.Range(-swimLimits.y, swimLimits.y), Random.Range(-swimLimits.z, swimLimits.z));
+            goalPosition = this.transform.position + new Vector3(Random.Range(-swimLimits.x, swimLimits.x), Random.Range(-swimLimits.y, swimLimits.y), Random.Range(-swimLimits.z, swimLimits.z));
         }
     }
 }
