@@ -6,6 +6,7 @@ public class GoToHospital : GAction
 {
     public override bool PrePerform()
     {
+        Debug.Log("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
         return true;    
     }
 

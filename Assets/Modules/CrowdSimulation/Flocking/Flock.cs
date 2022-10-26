@@ -87,11 +87,11 @@ public class Flock : MonoBehaviour
         }
         else
         {
-            if (Random.RandomRange(0f, 100f) < 10)
+            if (Random.Range(0f, 100f) < 10)
             {
                 speed = Random.Range(FlockManager.FM.minSpeed, FlockManager.FM.maxSpeed);
             }
-            if (Random.RandomRange(0f, 100f) < 50)
+            if (Random.Range(0f, 100f) < 50)
             {
                 ApplyRules();
             }

@@ -41,7 +41,10 @@ public class GAgent : MonoBehaviour
         foreach (GAction act in acts)
         {
             actions.Add(act);
+            Debug.Log("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+
         }
+
     }
 
     void CompleteAction()
